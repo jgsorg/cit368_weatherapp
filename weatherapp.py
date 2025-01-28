@@ -33,7 +33,7 @@ def cli_interface():
         print("Bad ZIP code, please use a 5-digit ZIP code.")
         return
     
-    api_key = "2090c15f968c595e2f8cffc690ad3865" # the keys take a couple hours to start working sometimes(in my experience). this is the key i used idk if itll still be active when you check this
+    api_key = "insertyourkey" # the keys take a couple hours to start working sometimes(in my experience).
     weather_data = get_weather(zip_code, api_key)
     if weather_data:
         forecast = display_forecast(weather_data)
@@ -50,7 +50,7 @@ def gui_interface():
             result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
             return
         
-        api_key = "2090c15f968c595e2f8cffc690ad3865" # the keys take a couple hours to start working sometimes(in my experience). this is the key i used idk if itll still be active when you check this
+        api_key = "insertyourkey" # the keys take a couple hours to start working sometimes(in my experience).
         weather_data = get_weather(zip_code, api_key)
         if weather_data:
             forecast = display_forecast(weather_data)
