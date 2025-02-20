@@ -3,7 +3,7 @@ import sys
 from tkinter import Tk, Label, Entry, Button, Text, END
 import json
 
-with open('secret.json', 'r') as file:
+with open('secrets.json', 'r') as file:
     api_key = json.load(file)["key"]
 
 def get_weather(zip_code, api_key): # retrieves the weather data from the api
