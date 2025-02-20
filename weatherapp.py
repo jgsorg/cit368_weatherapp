@@ -2,6 +2,7 @@ import requests
 import sys
 from tkinter import Tk, Label, Entry, Button, Text, END
 import json
+import re
 
 with open('secrets.json', 'r') as file:
     api_key = json.load(file)["key"]
@@ -48,10 +49,19 @@ def cli_interface():
 def gui_interface():
     def fetch_forecast():
         zip_code = zip_input.get()
-        if len(zip_code) != 5 or not zip_code.isdigit():
+        if len(zip_code) != 5:
             result_box.delete("1.0", END)
             result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
             return
+        if not zip_code.isdigit():
+            result_box.delete("1.0", END)
+            result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
+            return
+        if re.search(r"^\d{5}$", zip_code) is None:
+            result_box.delete("1.0", END)
+            result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
+            return
+        
         
         weather_data = get_weather(zip_code, api_key)
         if weather_data:
