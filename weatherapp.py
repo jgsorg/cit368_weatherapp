@@ -1,6 +1,10 @@
 import requests
 import sys
 from tkinter import Tk, Label, Entry, Button, Text, END
+import json
+
+with open('secret.json', 'r') as file:
+    api_key = json.load(file)["key"]
 
 def get_weather(zip_code, api_key): # retrieves the weather data from the api
     url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}' # using f to be able to pick api key and zip
@@ -33,7 +37,6 @@ def cli_interface():
         print("Bad ZIP code, please use a 5-digit ZIP code.")
         return
     
-    api_key = "insertyourkey" # the keys take a couple hours to start working sometimes(in my experience).
     weather_data = get_weather(zip_code, api_key)
     if weather_data:
         forecast = display_forecast(weather_data)
@@ -50,7 +53,6 @@ def gui_interface():
             result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
             return
         
-        api_key = "insertyourkey" # the keys take a couple hours to start working sometimes(in my experience).
         weather_data = get_weather(zip_code, api_key)
         if weather_data:
             forecast = display_forecast(weather_data)
