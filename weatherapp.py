@@ -27,6 +27,7 @@ def display_forecast(weather_data):
             forecast.append(f"{date}: {description} with a temperature of {temp}°F")
         return forecast
     return None
+'''
 # CLI Interface - taken from chatgpt, i dont really know how to use this i couldnt get it to work and im a tad confused
 def cli_interface():
     if len(sys.argv) != 2:
@@ -44,23 +45,29 @@ def cli_interface():
         if forecast:
             for line in forecast:
                 print(line)
-
+'''
 # GUI Interface - also chatgpt i dont know how gui works with python ! i have another file that just does it in terminal if thats better because thats what i did before i actually read the assignment
 def gui_interface():
-    def fetch_forecast():
+    def valid_zip(zip_code):
+        url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}'
+        response = requests.get(url) # gets response lol
+        def bad_result(): # if the zip is invalid.
+            result_box.delete("1.0", END)
+            result_box.insert(END, "Please enter a valid 5-digit zip code.\nExample: 12345\n\n")
+            result_box.insert(END, f"Error code: {response.status_code}")
         zip_code = zip_input.get()
         if len(zip_code) != 5:
-            result_box.delete("1.0", END)
-            result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
+            bad_result()
             return
         if not zip_code.isdigit():
-            result_box.delete("1.0", END)
-            result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
+            bad_result()
             return
         if re.search(r"^\d{5}$", zip_code) is None:
-            result_box.delete("1.0", END)
-            result_box.insert(END, "Invalid ZIP code. Please enter a 5-digit ZIP code.\n")
+            bad_result()
             return
+    def fetch_forecast():
+        zip_code = zip_input.get()
+        valid_zip(zip_code)
         
         
         weather_data = get_weather(zip_code, api_key)
@@ -91,10 +98,10 @@ def gui_interface():
     root.mainloop()
     
 def main():
-    if len(sys.argv) > 1:
-        cli_interface()  # Use CLI if arguments are provided
-    else:
-        gui_interface()  # Default to GUI if no arguments are provided
+   # if len(sys.argv) > 1:
+       # cli_interface()  # Use CLI if arguments are provided
+    
+    gui_interface()  # Default to GUI if no arguments are provided
 
 # testing
 
