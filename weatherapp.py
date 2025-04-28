@@ -62,19 +62,21 @@ def gui_interface():
         zip_code = zip_input.get()
         if not valid_zip(zip_code):
             result_box.delete("1.0", END)
-            result_box.insert(END, "Please enter a valid 5-digit zip code.\nExample: 12345\n")
+            result_box.insert(END, "Please enter a valid 5-digit ZIP code.\nExample: 12345\n")
             return
-        
+
         weather_data = get_weather(zip_code, api_key)
+        result_box.delete("1.0", END)
         if weather_data:
             forecast = display_forecast(weather_data)
-            result_box.delete("1.0", END)
             if forecast:
                 result_box.insert(END, "3-day weather forecast:\n")
                 for line in forecast:
                     result_box.insert(END, line + "\n")
             else:
-                result_box.insert(END, "Error fetching weather data.\n")
+                result_box.insert(END, "Error fetching weather data. Check logs for details.\n")
+        else:
+            result_box.insert(END, "Failed to fetch weather data. Check logs for details.\n")
 
     # Setting up the GUI window
     root = Tk()
@@ -93,6 +95,7 @@ def gui_interface():
     root.mainloop()
 
 def main():
+    logging.info("Application started")
     gui_interface()
 
 if __name__ == "__main__":
