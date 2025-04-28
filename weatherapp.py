@@ -3,6 +3,14 @@ import sys
 from tkinter import Tk, Label, Entry, Button, Text, END
 import json
 import re
+import logging
+from cryptography.fernet import Fernet
+
+logging.basicConfig(
+    filename='weatherapp.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 with open('secrets.json', 'r') as file:
     api_key = json.load(file)["key"]
@@ -10,7 +18,8 @@ with open('secrets.json', 'r') as file:
 # GUI Interface - also chatgpt i dont know how gui works with python ! i have another file that just does it in terminal if thats better because thats what i did before i actually read the assignment
 def valid_zip(zip_code):
     url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}'
-    response = requests.get(url) # gets response lol
+    response = requests.get(url)
+    zip_code = zip_code.strip() # removes whitespace
     if len(zip_code) != 5:
         return False
     if not zip_code.isdigit():
@@ -20,12 +29,16 @@ def valid_zip(zip_code):
     return True
 
 def get_weather(zip_code, api_key): 
-    url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}' # using f to be able to pick api key and zip
-    response = requests.get(url) # gets response lol
-    if response.status_code == 200: # if its successful it returns json data
+    try:
+        url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}'
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise HTTPError for bad responses
         return response.json()
-    else:
-        print(f"error fetching data: {response.status_code}") # if it fails it will return the error code (u can look it up on the website)
+    except requests.exceptions.HTTPError as http_err:
+        logging.error(f"HTTP error occurred: {http_err}")
+        return None
+    except requests.exceptions.RequestException as req_err:
+        logging.error(f"Request error occurred: {req_err}")
         return None
 
 def display_forecast(weather_data):
