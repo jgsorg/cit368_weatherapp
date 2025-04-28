@@ -32,7 +32,7 @@ def get_weather(zip_code, api_key):
     try:
         url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}'
         response = requests.get(url, timeout=10)
-        response.raise_for_status()  # Raise HTTPError for bad responses
+        response.raise_for_status()  # raise HTTPError for bad responses
         return response.json()
     except requests.exceptions.HTTPError as http_err:
         logging.error(f"HTTP error occurred: {http_err}")
@@ -44,13 +44,17 @@ def get_weather(zip_code, api_key):
 def display_forecast(weather_data):
     if weather_data:
         forecast = []
-        for i in range(3): # 3 day intervals
-            day = weather_data['list'][i * 8] # 8 entries per day
-            date = day['dt_txt']
-            temp = day['main']['temp']
-            description = day['weather'][0]['description']
-            forecast.append(f"{date}: {description} with a temperature of {temp}°F")
-        return forecast
+        try:
+            for i in range(3):  # 3-day intervals
+                day = weather_data['list'][i * 8]  # 8 entries per day
+                date = day['dt_txt']
+                temp = day['main']['temp']
+                description = day['weather'][0]['description']
+                forecast.append(f"{date}: {description} with a temperature of {temp}°F")
+            return forecast
+        except KeyError as e:
+            logging.error(f"Error parsing weather data: {e}")
+            return None
     return None
 
 def gui_interface():
