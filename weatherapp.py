@@ -63,6 +63,7 @@ def gui_interface():
         if not valid_zip(zip_code):
             result_box.delete("1.0", END)
             result_box.insert(END, "Please enter a valid 5-digit ZIP code.\nExample: 12345\n")
+            logging.info(f"Invalid ZIP code entered: {zip_code}")
             return
 
         weather_data = get_weather(zip_code, api_key)
@@ -73,10 +74,14 @@ def gui_interface():
                 result_box.insert(END, "3-day weather forecast:\n")
                 for line in forecast:
                     result_box.insert(END, line + "\n")
+                # Log the successful forecast request
+                logging.info(f"Weather requested for ZIP code {zip_code}: {forecast}")
             else:
                 result_box.insert(END, "Error fetching weather data. Check logs for details.\n")
+                logging.error(f"Error parsing weather data for ZIP code {zip_code}.")
         else:
             result_box.insert(END, "Failed to fetch weather data. Check logs for details.\n")
+            logging.error(f"Failed to fetch weather data for ZIP code {zip_code}.")
 
     # Setting up the GUI window
     root = Tk()
