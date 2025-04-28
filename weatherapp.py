@@ -1,6 +1,6 @@
 import requests
 import sys
-from tkinter import Tk, Label, Entry, Button, Text, END
+from tkinter import Tk, Label, Entry, Button, Text, END, Frame
 import json
 import re
 import logging
@@ -74,7 +74,7 @@ def gui_interface():
                 result_box.insert(END, "3-day weather forecast:\n")
                 for line in forecast:
                     result_box.insert(END, line + "\n")
-                # Log the successful forecast request
+                # log the successful forecast request
                 logging.info(f"Weather requested for ZIP code {zip_code}: {forecast}")
             else:
                 result_box.insert(END, "Error fetching weather data. Check logs for details.\n")
@@ -83,19 +83,30 @@ def gui_interface():
             result_box.insert(END, "Failed to fetch weather data. Check logs for details.\n")
             logging.error(f"Failed to fetch weather data for ZIP code {zip_code}.")
 
-    # Setting up the GUI window
+    # setting up the GUI window
     root = Tk()
-    root.title("Weather Forecast")
+    root.title("Weather!!")
+    root.geometry("500x300") 
+    root.configure(bg="#f0f0f0")
 
-    Label(root, text="Enter ZIP Code:").grid(row=0, column=0, padx=10, pady=10)
-    zip_input = Entry(root)
-    zip_input.grid(row=0, column=1, padx=10, pady=10)
+  
+    title_label = Label(root, text="Weather Forecast App", font=("Times New Roman", 16, "bold"), bg="#f0f0f0", fg="#333")
+    title_label.pack(pady=10)
 
-    get_forecast_btn = Button(root, text="Get Forecast", command=fetch_forecast)
+
+    input_frame = Frame(root, bg="#f0f0f0")
+    input_frame.pack(pady=10)
+
+    Label(input_frame, text="Enter ZIP Code:", font=("Times New Roman", 12), bg="#f0f0f0", fg="#333").grid(row=0, column=0, padx=10, pady=5)
+    zip_input = Entry(input_frame, font=("Times New Roman", 12), width=20)
+    zip_input.grid(row=0, column=1, padx=10, pady=5)
+
+    get_forecast_btn = Button(input_frame, text="Get Forecast", font=("Times New Roman", 12), bg="#4CAF50", fg="white", command=fetch_forecast)
     get_forecast_btn.grid(row=1, column=0, columnspan=2, pady=10)
 
-    result_box = Text(root, width=50, height=10)
-    result_box.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+    result_box = Text(root, font=("Times New Roman", 10), width=60, height=10, wrap="word", bg="#ffffff", fg="#333", borderwidth=2, relief="groove")
+    result_box.pack(pady=10, padx=10)
 
     root.mainloop()
 
