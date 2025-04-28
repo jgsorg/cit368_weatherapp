@@ -7,26 +7,6 @@ import re
 with open('secrets.json', 'r') as file:
     api_key = json.load(file)["key"]
 
-
-'''
-# CLI Interface - taken from chatgpt, i dont really know how to use this i couldnt get it to work and im a tad confused
-def cli_interface():
-    if len(sys.argv) != 2:
-        print("Usage: weather <ZIP_CODE>")
-        return
-    
-    zip_code = sys.argv[1]
-    if len(zip_code) != 5 or not zip_code.isdigit():
-        print("Bad ZIP code, please use a 5-digit ZIP code.")
-        return
-    
-    weather_data = get_weather(zip_code, api_key)
-    if weather_data:
-        forecast = display_forecast(weather_data)
-        if forecast:
-            for line in forecast:
-                print(line)
-'''
 # GUI Interface - also chatgpt i dont know how gui works with python ! i have another file that just does it in terminal if thats better because thats what i did before i actually read the assignment
 def valid_zip(zip_code):
     url = f'http://api.openweathermap.org/data/2.5/forecast?zip={zip_code},us&units=imperial&appid={api_key}'
@@ -96,7 +76,7 @@ def gui_interface():
     root.mainloop()
 
 def main():
-    gui_interface()  # Default to GUI if no arguments are provided
+    gui_interface()
 
 if __name__ == "__main__":
     main()
