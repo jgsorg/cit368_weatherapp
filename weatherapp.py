@@ -1,16 +1,19 @@
 import requests
-import sys
+import os
 from tkinter import Tk, Label, Entry, Button, Text, END, Frame
 import json
 import re
 import logging
 from cryptography.fernet import Fernet
+import hashlib
 
 logging.basicConfig(
     filename='weatherapp.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+if os.path.exists('weatherapp.log'):
+    os.chmod('weatherapp.log', 0o600)
 
 with open('secrets.json', 'r') as file:
     api_key = json.load(file)["key"]
@@ -40,6 +43,8 @@ def get_weather(zip_code, api_key):
     except requests.exceptions.RequestException as req_err:
         logging.error(f"Request error occurred: {req_err}")
         return None
+def hash_zip(zip_code):
+    return hashlib.sha256(zip_code.encode()).hexdigest()
 
 def display_forecast(weather_data):
     if weather_data:
@@ -75,7 +80,9 @@ def gui_interface():
                 for line in forecast:
                     result_box.insert(END, line + "\n")
                 # log the successful forecast request
-                logging.info(f"Weather requested for ZIP code {zip_code}: {forecast}")
+                hashed_zip = hash_zip(zip_code)
+                logging.info(f"Weather requested for hashed ZIP: {hashed_zip} — Forecast: {forecast}")
+
             else:
                 result_box.insert(END, "Error fetching weather data. Check logs for details.\n")
                 logging.error(f"Error parsing weather data for ZIP code {zip_code}.")
