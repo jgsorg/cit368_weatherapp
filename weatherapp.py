@@ -97,22 +97,22 @@ def gui_interface():
     root.configure(bg="#f0f0f0")
 
   
-    title_label = Label(root, text="Weather Forecast App", font=("Times New Roman", 16, "bold"), bg="#f0f0f0", fg="#333")
+    title_label = Label(root, text="Weather Forecast App", font=("Segoe UI", 16, "bold"), bg="#f0f0f0", fg="#333")
     title_label.pack(pady=10)
 
 
     input_frame = Frame(root, bg="#f0f0f0")
     input_frame.pack(pady=10)
 
-    Label(input_frame, text="Enter ZIP Code:", font=("Times New Roman", 12), bg="#f0f0f0", fg="#333").grid(row=0, column=0, padx=10, pady=5)
-    zip_input = Entry(input_frame, font=("Times New Roman", 12), width=20)
+    Label(input_frame, text="Enter ZIP Code:", font=("Segoe UI", 12), bg="#f0f0f0", fg="#333").grid(row=0, column=0, padx=10, pady=5)
+    zip_input = Entry(input_frame, font=("Segoe UI", 12), width=20)
     zip_input.grid(row=0, column=1, padx=10, pady=5)
 
-    get_forecast_btn = Button(input_frame, text="Get Forecast", font=("Times New Roman", 12), bg="#4CAF50", fg="white", command=fetch_forecast)
+    get_forecast_btn = Button(input_frame, text="Get Forecast", font=("Segoe UI", 12), bg="#4CAF50", fg="white", command=fetch_forecast)
     get_forecast_btn.grid(row=1, column=0, columnspan=2, pady=10)
 
 
-    result_box = Text(root, font=("Times New Roman", 10), width=60, height=10, wrap="word", bg="#ffffff", fg="#333", borderwidth=2, relief="groove")
+    result_box = Text(root, font=("Segoe UI", 10), width=60, height=10, wrap="word", bg="#ffffff", fg="#333", borderwidth=2, relief="groove")
     result_box.pack(pady=10, padx=10)
 
     root.mainloop()
